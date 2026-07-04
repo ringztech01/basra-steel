@@ -1,0 +1,15 @@
+# opencode
+.opencode/
+opencode.json
+opencode.jsonc
+.opencode
+*.mcp.json
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
