@@ -69,6 +69,12 @@ section{position:relative}
 .sec-head p{color:var(--silver);font-size:17px}
 .reveal{opacity:0;transform:translateY(26px);transition:.7s cubic-bezier(.2,.7,.2,1)}
 .reveal.in{opacity:1;transform:none}
+.reveal-left{opacity:0;transform:translateX(-50px);transition:.8s cubic-bezier(.2,.7,.2,1)}
+.reveal-right{opacity:0;transform:translateX(50px);transition:.8s cubic-bezier(.2,.7,.2,1)}
+.reveal-left.in,.reveal-right.in,.reveal-up.in,.reveal-zoom.in{opacity:1;transform:translateX(0)}
+.reveal-up{opacity:0;transform:translateY(60px);transition:.9s cubic-bezier(.2,.7,.2,1)}
+.reveal-zoom{opacity:0;transform:scale(.85);transition:.9s cubic-bezier(.2,.7,.2,1)}
+.d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}
 
 /* trust strip */
 .trust{background:var(--graphite);padding:30px 0;border-bottom:1px solid var(--line)}
@@ -97,13 +103,14 @@ section{position:relative}
 .why-header h2{font-size:clamp(30px,4.2vw,48px);font-weight:800;margin:14px 0 0}
 .why-row{display:grid;grid-template-columns:1fr 360px 1fr;gap:28px;align-items:center}
 .why-col{display:grid;gap:26px}
-.why-item{display:flex;gap:18px;align-items:flex-start}
+.why-item{display:flex;gap:18px;align-items:flex-start;transition:.6s cubic-bezier(.2,.7,.2,1);opacity:0;transform:translateY(14px)}
+.reveal-left.in .why-item,.reveal-right.in .why-item{opacity:1;transform:translateY(0)}
 .why-ic{width:58px;height:58px;min-width:58px;border:1px solid var(--void);background:var(--graphite);display:flex;align-items:center;justify-content:center;box-shadow:inset 0 0 0 1px rgba(255,255,255,.03)}
 .why-ic svg{width:26px;height:26px;color:var(--steel-1)}
 .why-copy h3{font-size:18px;font-weight:700;letter-spacing:.01em;margin:0 0 8px}
 .why-copy p{font-size:14.5px;color:var(--silver-dim);margin:0;line-height:1.6}
-.why-image{position:relative;min-height:450px;display:flex;align-items:flex-end;justify-content:center;overflow:visible}
-.why-image img{width:min(100%,340px);height:auto;display:block;transform:translateY(12%);mix-blend-mode:lighten}
+.why-image{position:relative;min-height:450px;display:flex;align-items:center;justify-content:center;overflow:visible}
+.why-image img{width:min(100%,340px);height:auto;display:block}
 @media(max-width:1100px){.why-row{grid-template-columns:1fr;gap:34px}.why-image{min-height:360px}}
 
 /* capabilities split */
@@ -295,7 +302,15 @@ footer{background:var(--void);padding:72px 0 30px}
 .disclaimer{background:var(--graphite);border-top:1px solid var(--line);padding:18px 0;text-align:center}
 .disclaimer p{font-family:'IBM Plex Mono';font-size:10.5px;letter-spacing:.04em;color:var(--silver-dim);max-width:900px;margin:0 auto}
 
-@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}}
+/* loader */
+#loader{position:fixed;inset:0;background:var(--void);display:flex;align-items:center;justify-content:center;z-index:99999;transition:opacity .6s ease,visibility .6s ease}
+#loader.hide{opacity:0;visibility:hidden;pointer-events:none}
+.ldr{text-align:center}
+.ldr-ring{width:44px;height:44px;margin:0 auto 18px;border:3px solid var(--line);border-top-color:var(--steel-2);border-radius:50%;animation:ldr-spin .8s linear infinite}
+@keyframes ldr-spin{to{transform:rotate(360deg)}}
+.ldr-txt{font-family:'Jost',sans-serif;font-size:11px;font-weight:700;letter-spacing:.32em;color:var(--steel-1)}
+
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.reveal,.reveal-left,.reveal-right,.reveal-up,.reveal-zoom{opacity:1;transform:none}}
 :focus-visible{outline:2px solid var(--steel-2);outline-offset:2px}
 
 /* ─── Electra-style Navbar & Hero ─── */
@@ -409,7 +424,7 @@ footer{background:var(--void);padding:72px 0 30px}
 
 .hero-section h4{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.28em;text-transform:uppercase;color:var(--steel-2)!important;font-weight:600}
 .hero-section h1{font-family:'Jost',sans-serif;font-weight:900;letter-spacing:-.02em;line-height:1.02;font-size:clamp(38px,5.6vw,72px)}
-.hero-section h1 .thin{display:block;color:var(--steel-1);font-weight:600;-webkit-text-fill-color:transparent;-webkit-text-stroke:1px var(--steel-1)}
+.hero-section h1 .thin{color:var(--steel-1);font-weight:600;-webkit-text-fill-color:transparent;-webkit-text-stroke:1px var(--steel-1)}
 .hero-section p{color:var(--silver);font-size:17px;max-width:540px}
 .hero-section .btn-light{background:var(--chrome);color:var(--void);border:none;font-family:'Jost',sans-serif;font-weight:700;font-size:13px;letter-spacing:.06em;text-transform:uppercase}
 .hero-section .btn-light:hover{background:var(--steel-2);color:var(--void)}
@@ -438,6 +453,8 @@ footer{background:var(--void);padding:72px 0 30px}
 </style>
 </head>
 <body>
+<!-- LOADER -->
+<div id="loader"><div class="ldr"><div class="ldr-ring"></div><div class="ldr-txt">AL BASRA STEEL</div></div></div>
 
 <!-- SVG defs: logo mark + H-beam -->
 <svg width="0" height="0" style="position:absolute"><defs>
@@ -522,7 +539,7 @@ footer{background:var(--void);padding:72px 0 30px}
         <div class="row g-4 align-items-center">
           <div class="col-lg-9 animated fadeInLeft">
             <div class="text-sm-center text-md-start">
-              <h1 class="display-2 text-white mb-4">We Build The<br>Backbone Of<span class="thin">Industry</span></h1>
+              <h1 class="display-2 text-white mb-4">We build the future<br><span style="color:var(--steel-1)">backbone of</span> <span class="thin">industry</span></h1>
               <p class="mb-4 fs-5">Al Basra Steel fabricates structural and heavy steel for oil &amp; gas, infrastructure and industrial projects across Iraq and the Gulf, engineered, welded and finished to international standards.</p>
               <div class="d-flex justify-content-center justify-content-md-start flex-shrink-0 mb-4">
                 <a class="btn btn-primary py-3 px-4 px-md-5 me-2" href="#quote">Request a Quote →</a>
@@ -542,7 +559,7 @@ footer{background:var(--void);padding:72px 0 30px}
         <div class="row g-4 align-items-center">
           <div class="col-lg-9 animated fadeInLeft">
             <div class="text-sm-center text-md-start">
-              <h1 class="display-2 text-white mb-4">We Build The<br>Backbone Of<span class="thin">Industry</span></h1>
+              <h1 class="display-2 text-white mb-4">We build the future<br><span style="color:var(--steel-1)">backbone of</span> <span class="thin">industry</span></h1>
               <p class="mb-4 fs-5">Al Basra Steel fabricates structural and heavy steel for oil &amp; gas, infrastructure and industrial projects across Iraq and the Gulf, engineered, welded and finished to international standards.</p>
               <div class="d-flex justify-content-center justify-content-md-start flex-shrink-0 mb-4">
                 <a class="btn btn-primary py-3 px-4 px-md-5 me-2" href="#quote">Request a Quote →</a>
@@ -574,8 +591,8 @@ footer{background:var(--void);padding:72px 0 30px}
 
 <!-- ABOUT / STATS (Electra-style 2-column) -->
 <section class="sec about-stats" id="stats"><div class="wrap">
-  <div class="about-split reveal">
-    <div class="about-content">
+  <div class="about-split">
+    <div class="about-content reveal-left">
       <div class="eyebrow">By The Numbers</div>
       <h2>Scale You Can Weld On</h2>
       <p class="about-lead">A vertically integrated fabrication operation built to take heavy structural packages from raw plate to erected steel, all under one roof in Basra's industrial zone.</p>
@@ -587,7 +604,7 @@ footer{background:var(--void);padding:72px 0 30px}
       </div>
       <a href="#capabilities" class="btn btn-primary py-3 px-5 mt-3" style="font-family:'Jost';font-weight:700;font-size:13px;letter-spacing:.06em;text-transform:uppercase">Explore Capabilities →</a>
     </div>
-    <div class="about-visual position-relative h-100">
+    <div class="about-visual position-relative h-100 reveal-right">
       <img src="https://cdn.openart.ai/openart-ai/production/2026-07/create-image/eas3D1tloGQ13w7GSen0/gpt-image-2-1_1783105347733_bde1f723.png" class="img-fluid w-100 h-100 av-main" style="object-fit:cover;" alt="">
       <div class="av-overlay" style="background:var(--panel)">
         <div class="position-absolute pt-3 av-left" style="width:50%;left:0;bottom:0;background:var(--panel)">
@@ -618,39 +635,39 @@ footer{background:var(--void);padding:72px 0 30px}
 
 <!-- ABOUT / WHY -->
 <section class="sec" id="about"><div class="wrap">
-  <div class="why-header reveal">
+  <div class="why-header reveal-zoom">
     <div class="eyebrow">Why Al Basra Steel</div>
     <h2>Engineered To Compete Internationally</h2>
     <p>Built for EPC, oil and gas, and heavy infrastructure packages that need disciplined fabrication, traceable quality, and on-time delivery in Iraq.</p>
   </div>
   <div class="why-row">
-    <div class="why-col">
-      <div class="why-item reveal">
+    <div class="why-col reveal-left">
+      <div class="why-item d1">
         <div class="why-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 2l8 4v6c0 5-3.5 8-8 10-4.5-2-8-5-8-10V6l8-4z"/><path d="M9 12l2 2 4-4"/></svg></div>
         <div class="why-copy"><h3>Code-Driven Quality</h3><p>ISO, EN 1090, AWS and ASME procedures on every package with handover documentation intact.</p></div>
       </div>
-      <div class="why-item reveal">
+      <div class="why-item d2">
         <div class="why-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 21h18M6 21V9l6-4 6 4v12M9 21v-6h6v6"/></svg></div>
         <div class="why-copy"><h3>Integrated Facility</h3><p>Cutting, fit up, welding, blasting and paint flow under one roof for tighter schedules.</p></div>
       </div>
-      <div class="why-item reveal">
+      <div class="why-item d3">
         <div class="why-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 7h16M4 12h16M4 17h10"/><circle cx="19" cy="17" r="2"/></svg></div>
         <div class="why-copy"><h3>Local, Fast, Reliable</h3><p>Fabrication in Basra reduces freight, delays and import friction for critical project work.</p></div>
       </div>
     </div>
-    <div class="why-image reveal">
-      <img src="https://cdn.openart.ai/openart-ai/production/2026-07/create-image/eas3D1tloGQ13w7GSen0/gpt-image-2-1_1783107845030_3edaa5fb.png" alt="Steel pipes cutout">
+    <div class="why-image reveal-up">
+      <img src="assets/transperant.png" alt="Steel pipes cutout">
     </div>
-    <div class="why-col">
-      <div class="why-item reveal">
+    <div class="why-col reveal-right">
+      <div class="why-item d1">
         <div class="why-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 2l3 7h7l-5.5 4.5L18 22l-6-4-6 4 1.5-8.5L2 9h7z"/></svg></div>
         <div class="why-copy"><h3>Safety First</h3><p>HSE habits are built into every workflow because zero-harm delivery is the only standard.</p></div>
       </div>
-      <div class="why-item reveal">
+      <div class="why-item d2">
         <div class="why-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 2v4M12 18v4M2 12h4M18 12h4M5 5l3 3M16 16l3 3M19 5l-3 3M8 16l-3 3"/><circle cx="12" cy="12" r="3"/></svg></div>
         <div class="why-copy"><h3>Oil &amp; Gas Ready</h3><p>Skids, pipe racks, tanks and structures built for upstream and petrochemical demands.</p></div>
       </div>
-      <div class="why-item reveal">
+      <div class="why-item d3">
         <div class="why-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></div>
         <div class="why-copy"><h3>Engineered Speed</h3><p>Lean workflow and CNC-enabled production keep tonnage moving without cutting corners.</p></div>
       </div>
@@ -661,10 +678,10 @@ footer{background:var(--void);padding:72px 0 30px}
 <!-- CAPABILITIES -->
 <section class="sec cap" id="capabilities"><div class="wrap">
   <div class="split">
-    <div class="visual reveal brushed">
+    <div class="visual reveal-left brushed">
       <img src="https://cdn.openart.ai/openart-ai/production/2026-07/create-image/eas3D1tloGQ13w7GSen0/gpt-image-2-1_1783108266891_f50dd263.png" alt="Steel fabrication process from raw plate to erected steel" class="cap-img">
     </div>
-    <div class="reveal">
+    <div class="reveal-right">
       <div class="eyebrow">Manufacturing Capabilities</div>
       <h2 style="font-size:clamp(28px,3.6vw,42px);margin:16px 0 16px">From Raw Plate<br>To Erected Steel</h2>
       <p style="color:var(--silver)">Our facility is laid out as a continuous line: material handling feeds CNC and plasma cutting, which feeds fit up and welding bays, blast and paint booths, and finally load out. Nothing waits, and nothing ships unverified.</p>
@@ -682,6 +699,18 @@ footer{background:var(--void);padding:72px 0 30px}
       </ul>
       <p class="mono" style="font-size:10px;color:var(--silver-dim);margin-top:16px">*Galvanizing available via qualified partner line.</p>
     </div>
+  </div>
+</div></section>
+
+<!-- CTA BANNER -->
+<section class="cta-ban"><div class="wrap">
+  <span class="cd1"></span><span class="cd2"></span>
+  <div class="inner">
+    <div class="text">
+      <h4>Need a Reliable Fabrication Partner?</h4>
+      <h2>Bring Us Your Scope And We Will Build The Plan</h2>
+    </div>
+    <a href="#contact" class="btn-cta">Start A Quote &nbsp;→</a>
   </div>
 </div></section>
 
@@ -924,12 +953,17 @@ footer{background:var(--void);padding:72px 0 30px}
   <div class="sec-head reveal">
     <div class="eyebrow">What Clients Say</div>
     <h2>Trusted On Site</h2>
-    <p>The testimonials below are sample content created for website presentation and do not represent real clients.</p>
   </div>
   <div class="tst-grid reveal">
-    <div class="tst"><span class="sample mono">SAMPLE CONTENT</span><p class="q">"They delivered a complex pipe-rack package on schedule and to spec. The QA documentation was some of the cleanest we've seen in the region."</p><div class="by mono">PROJECT DIRECTOR<span>Sample EPC Contractor</span></div></div>
-    <div class="tst"><span class="sample mono">SAMPLE CONTENT</span><p class="q">"Fabricating locally in Basra cut weeks off our lead time. Weld quality passed NDT first time across the package."</p><div class="by mono">CONSTRUCTION MANAGER<span>Sample Energy Client</span></div></div>
-    <div class="tst"><span class="sample mono">SAMPLE CONTENT</span><p class="q">"Professional from enquiry to load-out. The coating and finish held up perfectly in a harsh coastal environment."</p><div class="by mono">FACILITIES LEAD<span>Sample Industrial Client</span></div></div>
+    <div class="tst">
+      <span class="sample mono">SAMPLE CONTENT</span><p class="q">"They delivered a complex pipe-rack package on schedule and to spec. The QA documentation was some of the cleanest we've seen in the region."</p><div class="by mono">PROJECT DIRECTOR<span>Sample EPC Contractor</span></div>
+    </div>
+    <div class="tst">
+      <span class="sample mono">SAMPLE CONTENT</span><p class="q">"Fabricating locally in Basra cut weeks off our lead time. Weld quality passed NDT first time across the package."</p><div class="by mono">CONSTRUCTION MANAGER<span>Sample Energy Client</span></div>
+    </div>
+    <div class="tst">
+      <span class="sample mono">SAMPLE CONTENT</span><p class="q">"Professional from enquiry to load-out. The coating and finish held up perfectly in a harsh coastal environment."</p><div class="by mono">FACILITIES LEAD<span>Sample Industrial Client</span></div>
+    </div>
   </div>
 </div></section>
 
@@ -1011,10 +1045,13 @@ footer{background:var(--void);padding:72px 0 30px}
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
 <script>
+// hide loader
+$(window).on('load',function(){$('#loader').addClass('hide');});
+
 // Hero carousel init
 $('.header-carousel').owlCarousel({
   animateOut:'fadeOut', loop:true, margin:0, stagePadding:0,
-  autoplay:true, smartSpeed:1000, dots:false, nav:true, items:1,
+  autoplay:true, smartSpeed:2000, autoplayTimeout:6000, dots:false, nav:true, items:1,
   navText:['<i class="fas fa-chevron-left"></i>','<i class="fas fa-chevron-right"></i>']
 });
 
@@ -1027,8 +1064,8 @@ $('.svc-carousel').owlCarousel({
 });
 
 // reveal on scroll
-const io=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}})},{threshold:.12});
-document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+const io=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');}else{e.target.classList.remove('in');}})},{threshold:.12});
+document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-up, .reveal-zoom').forEach(el=>io.observe(el));
 
 // counters
 function animateCount(el){
