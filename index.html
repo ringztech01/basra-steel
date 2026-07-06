@@ -38,13 +38,15 @@
   --maxw:1240px;
 }
 *{margin:0;padding:0;box-sizing:border-box}
-html{scroll-behavior:smooth;overflow-x:hidden}
+html{scroll-behavior:smooth}
 body{
   background:var(--void);
   color:var(--silver);
   font-family:'Inter',system-ui,sans-serif;
   font-size:16px;line-height:1.6;
   -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+  width:100%;position:relative;margin:0
 }
 h1,h2,h3,h4{font-family:'Jost',sans-serif;color:var(--chrome);line-height:1.02;letter-spacing:-.01em;text-transform:lowercase}
 h1::first-letter,h2::first-letter,h3::first-letter,h4::first-letter{text-transform:uppercase}
@@ -614,9 +616,11 @@ footer{background:var(--void);padding:72px 0 30px}
   .co-body .co-grid{grid-template-columns:1fr!important;gap:20px!important;padding:24px 16px!important}
   .co-wrap{overflow:visible!important;border-radius:10px!important}
 }
+#app{overflow-x:hidden;width:100%}
 </style>
 </head>
 <body>
+<div id="app">
 <!-- LOADER -->
 <div id="loader"><div class="ldr"><div class="ldr-ring"></div><div class="ldr-txt">AL BASRA STEEL</div></div></div>
 
@@ -1273,6 +1277,8 @@ footer{background:var(--void);padding:72px 0 30px}
     <span>Khor Al-Zubair, Basra · Iraq · EN / العربية</span>
   </div>
 </div></footer>
+
+</div><!-- end app -->
 
 <!-- FLOATING ACTIONS -->
 <div class="float">
